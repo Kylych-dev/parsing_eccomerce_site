@@ -6,7 +6,7 @@ poetry install    # install dependencies
 poetry shell      # turn on virtual env 
 ```
 ```bash
-python main.py input_files/sample.html --max-length 500
+python main.py 
 ```
 
 ### Содержание проекта:
