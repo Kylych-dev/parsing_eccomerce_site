@@ -1,33 +1,31 @@
 from typing import Generator
 from bs4 import BeautifulSoup as bs
 import re, os, click
-
+from selenium import webdriver
 
 MAX_LENGTH = 5000
 
 
-@click.command()
-@click.option('--max-length', type=int, default=MAX_LENGTH, help='The maximum length of the message fragment.')
-@click.argument('source', type=click.Path(exists=True))
-def main_func(source, max_length):
+# @click.command()
+# @click.argument('source', type=click.Path(exists=True))
+def main_func(source, store_address, categories, pages):
     output_directory = 'output_files'
     base_name = 'sample'
     extension = '.html'
 
     next_filename = get_next_filename(output_directory, base_name, extension)
+    base_url = 'https://sbermarket.ru/'
 
-    res2 = split_message('input_files/sample.html')
+
+    res2 = select_store(base_url, store_address)
     with open(os.path.join(output_directory, next_filename), 'w', encoding='utf-8') as file:
         for part in res2:
             file.write(part + '\n')
 
 
-def split_message(source: str, max_length=MAX_LENGTH) -> Generator[str, None, None]:
-    """Splits the original message (`source`) into fragments of the specified length
-        (`max_len`)."""
-    with open(source, 'r', encoding='utf-8') as file:
-        html_content = file.read()
-        soup = bs(html_content)
+def select_store(url, store_address):
+    options = webdriver.ChromeOptions()
+    pass #TODO
 
 
 def get_next_filename(directory: str, base_name: str, extension: str) -> str:
@@ -41,6 +39,6 @@ def get_next_filename(directory: str, base_name: str, extension: str) -> str:
 
 
 if __name__ == '__main__':
-    main_func()
+    main_func('input_files', 'output_files', 'categories', 'pages')
 
 
