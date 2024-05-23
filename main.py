@@ -25,6 +25,7 @@ def main_func(source, store_address, categories, pages):
 
 def select_store(url, store_address):
     options = webdriver.ChromeOptions()
+
     pass #TODO
 
 
