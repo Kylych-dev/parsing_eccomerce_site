@@ -19,4 +19,4 @@ python main.py input_files/sample.html --max-length 500
 
 ### Контакты:
 - Email: [email](mailto:mirbekov1kylych@gmail.com)
-- Telegram: [telegram](https://t.me/kylych_mirbekov)
+- Telegram: [telegram](https://t.me/mirbekov0909)
