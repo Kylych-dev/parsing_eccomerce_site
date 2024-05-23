@@ -86,4 +86,54 @@ if __name__ == '__main__':
 
 https://sbermarket.ru/technopark/c/katalog-elektronika/tekhnika-apple-ce25290?sid=25686
 
+
+
+from selenium.webdriver import Chrome
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from time import sleep
+from bs4 import BeautifulSoup
+from selenium.webdriver import FirefoxOptions
+from selenium.webdriver.common.by import By
+
+
+
+
+from selenium import webdriver
+import time
+
+
+
+
+options = webdriver.ChromeOptions()
+driver = webdriver.Chrome(options=options)
+
+driver.get("https://sbermarket.ru/")
+
+
+
+
+
+element = driver.find_element(By.CLASS_NAME, "ChipSelect_root__czaNo")
+
+# Find the specific li element within the general block
+specific_li_element = element.find_element(By.XPATH, "//li[contains(., 'Электроника')]")
+
+specific_li_element.click()
+
+time.sleep(5)
+
+
+technopark_element = driver.until(EC.presence_of_element_located((By.XPATH, "//li[contains(text(), 'Технопарк')]")))
+
+technopark_element.click()
+
+time.sleep(5)
+
+
+
+
+driver.close()
+
+
 '''
