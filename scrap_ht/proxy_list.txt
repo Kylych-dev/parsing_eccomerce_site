@@ -1,6 +1,3 @@
-Free proxies from free-proxy-list.net
-Updated at 2024-05-23 13:52:02 UTC.
-
 8.219.97.248:80
 43.134.32.184:3128
 114.143.0.177:80
