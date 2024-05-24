@@ -1,12 +1,17 @@
 import requests
 
+
+user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0"
+
+
 with open('scrap_ht/valid_proxies.txt', 'r') as file:
     proxies = file.read().split('\n')
 
 
 site_to_check = [
-    'http://books.toscrape.com/',
-    'https://www.okeydostavka.ru/msk',
+    # 'http://books.toscrape.com/',
+    # 'https://www.okeydostavka.ru/msk',
+    'https://sbermarket.ru/'
     # 'https://www.okeydostavka.ru/msk/kantseliarskie-tovary-knigi'
 ]
 
@@ -18,8 +23,11 @@ for site in site_to_check:
         res = requests.get(site, proxies={
                                 'http': proxies[counter],
                                 'https': proxies[counter]
-                            },
-                                timeout=5)
+                                # 'https': '203.189.88.156:80'
+
+        },
+                           )
+                                # timeout=5)
         print(res.status_code, f'status code -=-=-=-=   {proxies}   site: {site}')
     except requests.exceptions.ProxyError as e:
         print(f'ProxyError for proxies {proxies}: {e}')

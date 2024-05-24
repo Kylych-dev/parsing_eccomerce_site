@@ -1,14 +1,55 @@
 from typing import Generator
 from bs4 import BeautifulSoup as bs
 import re, os, click, requests
-from selenium import webdriver
-from selenium.webdriver import common
-from selenium.webdriver.support.ui import WebDriverWait as wait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+import time, requests
 
-MAX_LENGTH = 5000
+headers = {
+    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
+}
 
+proxies = {
+    'http': '102.214.166.1:1976',
+    'https': '102.214.166.1:1976'
+}
+
+BASE_URL = 'https://www.okeydostavka.ru/msk'
+
+url = BASE_URL + '/kantseliarskie-tovary-knigi'
+
+
+
+def proxy_request(url):
+    payload = {
+        'source': 'universal',
+        'url': url,
+        'geo_location': 'Germany'
+    }
+
+    response = requests.request(
+        # 'POST'm
+    )
+
+
+
+def get_location(url):
+    response = requests.get(url=url, headers=headers)
+    soup = BeautifulSoup(response.text, 'lxml')
+
+    ip = soup.find('div', class_='ip').text.strip()
+
+    print(ip)
+
+
+
+def main():
+    get_location(url='https://2ip.ru/')
+
+
+BASE_URL = 'https://www.okeydostavka.ru/msk'
+
+url = BASE_URL + '/kantseliarskie-tovary-knigi'
+
+response
 
 # @click.command()
 # @click.argument('source', type=click.Path(exists=True))
@@ -28,23 +69,8 @@ def main_func(store_address, categories, pages):
 
 
 def select_store(url, store_address):
-    options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(options=options)
-    driver.get(url)
+    soup = bs(requests.get(url, headers=headers).content, 'lxml')
 
-    try:
-        wait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="store-selector"]'))
-        ).click()
-
-        store_input = driver.find_element_by_xpath('//*[@id="store-selector"]')
-        store_input.send_keys(store_address)
-        driver.find_element(By.XPATH, '//*[@id="select-store-button"]').click()
-
-        current_url = driver.current_url
-
-    finally:
-        driver.quit()
 
     return current_url
 
@@ -80,60 +106,3 @@ def get_next_filename(directory: str, base_name: str, extension: str) -> str:
 
 if __name__ == '__main__':
     main_func('https://sbermarket.ru/technopark', 'katalog-elektronika', 'pages')
-
-
-'''
-
-https://sbermarket.ru/technopark/c/katalog-elektronika/tekhnika-apple-ce25290?sid=25686
-
-
-
-from selenium.webdriver import Chrome
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from time import sleep
-from bs4 import BeautifulSoup
-from selenium.webdriver import FirefoxOptions
-from selenium.webdriver.common.by import By
-
-
-
-
-from selenium import webdriver
-import time
-
-
-
-
-options = webdriver.ChromeOptions()
-driver = webdriver.Chrome(options=options)
-
-driver.get("https://sbermarket.ru/")
-
-
-
-
-
-element = driver.find_element(By.CLASS_NAME, "ChipSelect_root__czaNo")
-
-# Find the specific li element within the general block
-specific_li_element = element.find_element(By.XPATH, "//li[contains(., 'Электроника')]")
-
-specific_li_element.click()
-
-time.sleep(5)
-
-
-technopark_element = driver.until(EC.presence_of_element_located((By.XPATH, "//li[contains(text(), 'Технопарк')]")))
-
-technopark_element.click()
-
-time.sleep(5)
-
-
-
-
-driver.close()
-
-
-'''
