@@ -17,6 +17,8 @@ site_to_check = [
 
 counter = 0
 
+print(proxies[counter], '-=-=--=-=-=-=-=--=-=-=-=')
+
 for site in site_to_check:
     try:
         print(f'Checking {proxies[counter]}')
@@ -24,22 +26,21 @@ for site in site_to_check:
                                 'http': proxies[counter],
                                 'https': proxies[counter]
                                 # 'https': '203.189.88.156:80'
-
         },
                            )
                                 # timeout=5)
         print(res.status_code, f'status code -=-=-=-=   {proxies}   site: {site}')
-    except requests.exceptions.ProxyError as e:
-        print(f'ProxyError for proxies {proxies}: {e}')
-    except requests.exceptions.ConnectionError as e:
-        print(f'ConnectionError for proxies {proxies}: {e}')
-    except requests.exceptions.Timeout as e:
-        print(f'TimeoutError for proxies {proxies}: {e}')
-    except Exception as e:
-        print(f'An error occurred for proxies {proxies}: {e}')
+    except requests.exceptions.ProxyError as ex:
+        print(f'ProxyError for proxies {proxies}: {ex}')
+    except requests.exceptions.ConnectionError as ex:
+        print(f'ConnectionError for proxies {proxies}: {ex}')
+    except requests.exceptions.Timeout as ex:
+        print(f'TimeoutError for proxies {proxies}: {ex}')
+    except Exception as ex:
+        print(f'An error occurred for proxies {proxies}: {ex}')
 
-    # except Exception as e:
-    #     print(e)
+    # except Exception as ex:
+    #     print(ex)
     # finally:
     #     counter += 1
     #     if counter == len(proxies):
