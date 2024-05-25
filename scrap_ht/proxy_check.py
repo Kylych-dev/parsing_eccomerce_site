@@ -22,13 +22,14 @@ print(proxies[counter], '-=-=--=-=-=-=-=--=-=-=-=')
 for site in site_to_check:
     try:
         print(f'Checking {proxies[counter]}')
-        res = requests.get(site, proxies={
+        res = requests.get(site,
+                           proxies={
                                 'http': proxies[counter],
                                 'https': proxies[counter]
-                                # 'https': '203.189.88.156:80'
-        },
+                           },
+                           verify=False,
                            )
-                                # timeout=5)
+
         print(res.status_code, f'status code -=-=-=-=   {proxies}   site: {site}')
     except requests.exceptions.ProxyError as ex:
         print(f'ProxyError for proxies {proxies}: {ex}')

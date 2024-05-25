@@ -1,40 +1,31 @@
 from typing import Generator
 from bs4 import BeautifulSoup as bs
 import re, os, click, requests
-import time, requests
 
 
 with open('scrap_ht/valid_proxies.txt', 'r') as file:
     proxies = file.read().split('\n')
 
 
-def select_store(store_address: str, headers: dict, proxy: str) -> str:
-    proxy_dict = {
-        'http': f'http://{proxy}',
-        'https': f'https://{proxy}'
-    }
-    response = requests.get(url=store_address, proxies=proxy_dict, headers=headers)
-    soup = bs(response.text, 'lxml')
+def select_store(store_address: str, headers: dict) -> str:
+    response = requests.get(url=store_address, headers=headers, verify=False)
+    if response.status_code == 200:
+        print('ok select store')
+        soup = bs(response.text, 'html.parser')
+        return store_address
+    else:
+        print('Error in selecting store. Please check the URL and try again.')
+        return None
 
-    url = 'cool yes!!!'
-    return url
 
-def parse_category(url:str, category:str, pages:int, headers:dict) -> list:
+def parse_category(url:str, category, headers) -> list:
     products = []
-    for page in range(1, pages + 1):
-
-        response = requests.get(f"{url}/{category}?page={page}", headers=headers)
+    full_url = f'{url}/{category}'
+    response = requests.get(full_url, headers=headers, verify=False)
+    print('response is work -=-=-==-=-=--=-=-=--=')
+    if response.status_code == 200:
+        # response = requests.get(f"{url}/{category}?page={page}", headers=headers)
         soup = bs(response.content, 'html.parser')
-
-        for item in soup.select('.product-card'):
-            name = item.select('.product-name').text.strip()
-            price = item.select('.product-price').text.strip()
-            products.append(
-                {
-                    'name': name,
-                    'price': price
-                }
-            )
     return products
 
 def get_next_filename(directory: str, base_name: str, extension: str) -> str:
@@ -48,48 +39,52 @@ def get_next_filename(directory: str, base_name: str, extension: str) -> str:
 
 # @click.command()
 # @click.argument('source', type=click.Path(exists=True))
-def main_func(store_address, categories, pages):
+def main_func(store_address, category=''):
     output_directory = 'output_files'
     base_name = 'sample'
     extension = '.txt'
-
-    """Selects a store and returns the current URL."""
     headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
+        'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
     }
 
-    # proxies = {
-    #     # 'http': '102.214.166.1:1976',
-    #     'https': 'https://102.214.166.1:1976'
-    # }
+    current_url = select_store(store_address, headers)
 
-
-
-    working_proxy = None
-    for proxy in proxies:
-        try:
-            print(f'Checkign proxy: {proxy}')
-            current_url = select_store(store_address, headers, proxy)
-            if current_url:
-                working_proxy = proxy
-                break
-        except requests.exceptions.RequestException as ex:
-            print(f'Error with proxies {proxy}: {ex}')
-            continue
-    if working_proxy is None:
-        print('No working proxies found.')
-        return
-
-    # current_url = select_store(store_address, headers, proxies[counter])
-
-
-    products = parse_category(current_url, categories, pages, headers)
+    # if pages is not None:
+    #     products = parse_category(current_url, category, pages, headers)
+    # else:
+    products = parse_category(current_url, category, headers)
+    # products = parse_category(current_url, categories, pages, headers)
     next_filename = get_next_filename(output_directory, base_name, extension)
 
-    # res2 = select_store(store_address)
-    with open(os.path.join(output_directory, next_filename), 'w', encoding='utf-8') as file:
-        for product in products:
-            file.write(product + '\n')
+    # with open(os.path.join(output_directory, next_filename), 'w', encoding='utf-8') as file:
+    #     for product in products:
+    #         file.write(product + '\n')
+
 
 if __name__ == '__main__':
-    main_func('https://samokat.ru/', '/category/90b0e15a-208c-4264-ac00-07b9cff26bba/', 'pages')
+    base_url = 'https://samokat.ru'
+    category = 'category/90b0e15a-208c-4264-ac00-07b9cff26bba'      # Ваша категория товаров
+    # pages = 3   # Количество страниц для парсинга
+    # min_price = 69.99  # Минимальная цена
+    # max_price = 4499.0  # Максимальная цена
+    # page_size = 72  # Количество продуктов на странице
+
+    main_func(base_url, category)
+
+
+
+'''
+
+https://www.okeydostavka.ru/msk/kantseliarskie-tovary-knigi/knigi/khudozhestvennaia-literatura
+
+
+https://www.okeydostavka.ru/msk/kantseliarskie-tovary-knigi/knigi/khudozhestvennaia-literatura
+
+#facet:&productBeginIndex:72&orderBy:2&pageView:grid&minPrice:69.99&maxPrice:4499.0&pageSize:72&
+
+
+
+https://www.okeydostavka.ru/msk/kantseliarskie-tovary-knigi/knigi/khudozhestvennaia-literatura
+
+'''
