@@ -1,0 +1,56 @@
+<html lang="en"><head>
+    <title>Chrome Headless Detection (Round II)</title>
+    <style>
+      td:last-child {
+        background-color: #c8d86d;
+        max-width:300px;
+        word-wrap:break-word;
+      }
+      td.failed {
+        background-color: #f45159;
+      }
+      table, th, td {
+        border: 1px solid black;
+      }
+      span.age {
+        float: right;
+        margin-left: 40px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tbody><tr>
+        <th>Test Name</th>
+        <th>Result</th>
+      </tr>
+      <tr>
+        <td>User Agent <span class="age">(Old)</span></td>
+        <td class="result passed" id="user-agent-result">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36</td>
+      </tr>
+      <tr>
+        <td>WebDriver <span class="age">(New)</span></td>
+        <td class="result passed" id="webdriver-result">missing (passed)</td>
+      </tr>
+      <tr>
+        <td>Chrome <span class="age">(New)</span></td>
+        <td class="result passed" id="chrome-result">present (passed)</td>
+      </tr>
+      <tr>
+        <td>Permissions <span class="age">(New)</span></td>
+        <td class="result passed" id="permissions-result">prompt</td>
+      </tr>
+      <tr>
+        <td>Plugins Length <span class="age">(Old)</span></td>
+        <td class="result passed" id="plugins-length-result">5</td>
+      </tr>
+      <tr>
+        <td>Languages <span class="age">(Old)</span></td>
+        <td class="result passed" id="languages-result">en-US,en</td>
+      </tr>
+    </tbody></table>
+    <script src="chrome-headless-test.js"></script>
+  
+
+</body></html>

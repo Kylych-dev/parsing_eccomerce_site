@@ -11,7 +11,10 @@ with open('scrap_ht/valid_proxies.txt', 'r') as file:
 site_to_check = [
     # 'http://books.toscrape.com/',
     # 'https://www.okeydostavka.ru/msk',
-    'https://sbermarket.ru/'
+    # 'https://sbermarket.ru/',
+    # 'https://samokat.ru/',
+
+    'https://samokat.ru/category/90b0e15a-208c-4264-ac00-07b9cff26bba'
     # 'https://www.okeydostavka.ru/msk/kantseliarskie-tovary-knigi'
 ]
 
@@ -53,4 +56,6 @@ for site in site_to_check:
 '''
 
 complete Java code that supports both HTTP and HTTPS requests using SOCKS proxy.
+
+chrome-extension://bgpmiljelfnilfcfmoppijdkmccbccel/isolated-first.jst
 '''
